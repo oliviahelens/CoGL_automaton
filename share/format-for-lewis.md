@@ -1,10 +1,10 @@
 # CGoL tape format — input + output
 
-For ctjLewis. Adapting your tape methodology to 2D Conway's GoL on
-claude-opus-4-7. All 4 tested 10×10 patterns (1 LWSS + 3 random soups
-at 30/30/40% density) gave 100% strict cell-accuracy for 2 steps in
-one shot — no spatial decomposition, the whole 10×10 grid is
-enumerated in a single tape.
+Adapting the tape methodology to 2D Conway's GoL on claude-opus-4-7.
+All 4 tested 10×10 patterns (1 LWSS + 3 random soups at 30/30/40%
+density) gave 100% strict cell-accuracy for 2 steps in one shot — no
+spatial decomposition, the whole 10×10 grid is enumerated in a single
+tape.
 
 Code: <repo URL>
 
@@ -43,9 +43,9 @@ prefix (~28K tokens) is identical across all trials and prompt-cached.
 The `NW=r2c2█` binding is the key v2 change vs the first attempt
 (which used just `NW█`). It forces the value token to follow a source
 coordinate that the model must copy verbatim from the INDEXED block —
-an induction-head-friendly operation. Without it, on a 6×6 toad I saw
-the model fabricate `NW░` when the source was `█` (single attention
-error, propagated through neighborhood).
+an induction-head-friendly operation. Without it, on a 6×6 toad the
+model fabricated `NW░` when the source was `█` — a single attention
+error that propagated through the neighborhood.
 
 ## Full training example — blinker 5×5 / 2 steps
 
@@ -183,21 +183,19 @@ The LWSS displaced two cells SE in 2 steps, which is the correct
 period-2 behavior. Strict bit-for-bit match against the ground-truth
 simulator on every cell of every step.
 
-## Caveats I'd flag before believing too much
+## Caveats
 
-1. Only 2 steps. Your "too deep" probably means depth-in-time. We
-   haven't tested 10×10 over 5+ steps where errors can compound across
-   iterations.
-2. Only 4 patterns at 10×10. Possible the seeds I picked happened to
-   be easy. Adversarial seeds (lots of cells near the survival/birth
+1. Only 2 steps. "Too deep" likely means depth-in-time. 10×10 over 5+
+   steps, where errors can compound across iterations, is untested.
+2. Only 4 patterns at 10×10. Possible the seeds chosen happened to be
+   easy. Adversarial seeds (lots of cells near the survival/birth
    boundary at 2/3 live neighbors) might be harder.
-3. Only one model (Opus 4.7). Format may be doing less work than the
-   raw model strength.
+3. Only one model (Opus 4.7). The format may be doing less work than
+   the raw model strength.
 4. v1 (without the `NW=r2c2█` source-coord binding) failed at 6×6
-   toad/2-step with one lookup error. So the binding is doing real
-   work — it's not free. If anything I'd guess that's the piece doing
-   the heavy lifting at scale.
+   toad/2-step with one lookup error. The binding is doing real work
+   — it's not free, and likely the piece doing the heavy lifting at
+   scale.
 
-Next experiment is the long-horizon one (10×10 over 5+ steps) — that
-should either vindicate or refute your "too deep" prediction. Want me
-to send that result when it's done?
+Next experiment: 10×10 over 5+ steps. That should either vindicate or
+refute the "too deep" prediction.
