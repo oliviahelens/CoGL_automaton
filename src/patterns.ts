@@ -139,6 +139,8 @@ export const TEST_PATTERNS: NamedPattern[] = [
   { name: "beacon", grid: beacon6x6(), steps: 2 },
   { name: "glider-displaced", grid: gliderDisplaced6x6(), steps: 3 },
   { name: "lwss", grid: lwss7x7(), steps: 2 },
-  { name: "random-soup", grid: randomSoup6x6(0xc0ffee), steps: 3 },
+  { name: "random-soup-a", grid: randomSoup6x6(0xc0ffee), steps: 3 },
+  { name: "random-soup-b", grid: randomSoup6x6(0xbadbeef), steps: 3 },
+  { name: "random-soup-c", grid: randomSoup6x6(0xfacade), steps: 3 },
   { name: "r-pentomino", grid: rPentomino7x7(), steps: 2 },
 ];
