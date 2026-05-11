@@ -1,0 +1,19 @@
+{
+  "name": "cgol-attention",
+  "version": "0.1.0",
+  "description": "Conway's Game of Life via in-context attention — replicating ctjLewis's tape methodology on Claude Opus 4.7",
+  "type": "module",
+  "scripts": {
+    "build:tapes": "bun run src/training.ts",
+    "run": "bun run src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

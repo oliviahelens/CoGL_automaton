@@ -1,0 +1,110 @@
+=== USER ===
+SIZE 5x5
+STEPS 2
+GRID 0/2
+r0: ░ ░ ░ ░ ░
+r1: ░ ░ ░ ░ ░
+r2: ░ █ █ █ ░
+r3: ░ ░ ░ ░ ░
+r4: ░ ░ ░ ░ ░
+
+=== ASSISTANT ===
+RULE B3/S23
+LOOKUP
+  live+0→░  live+1→░  live+2→█  live+3→█
+  live+4→░  live+5→░  live+6→░  live+7→░  live+8→░
+  dead+0→░  dead+1→░  dead+2→░  dead+3→█
+  dead+4→░  dead+5→░  dead+6→░  dead+7→░  dead+8→░
+BOUNDARY dead
+GRID 0/2
+r0: ░ ░ ░ ░ ░
+r1: ░ ░ ░ ░ ░
+r2: ░ █ █ █ ░
+r3: ░ ░ ░ ░ ░
+r4: ░ ░ ░ ░ ░
+INDEXED
+r0c0░ r0c1░ r0c2░ r0c3░ r0c4░
+r1c0░ r1c1░ r1c2░ r1c3░ r1c4░
+r2c0░ r2c1█ r2c2█ r2c3█ r2c4░
+r3c0░ r3c1░ r3c2░ r3c3░ r3c4░
+r4c0░ r4c1░ r4c2░ r4c3░ r4c4░
+STEP 0→1
+r0c0░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r0c0░
+r0c1░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r0c1░
+r0c2░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r0c2░
+r0c3░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r0c3░
+r0c4░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r0c4░
+r1c0░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE█(1) =1 dead+1→░ r1c0░
+r1c1░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S█(1) SE█(2) =2 dead+2→░ r1c1░
+r1c2░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW█(1) S█(2) SE█(3) =3 dead+3→█ r1c2█
+r1c3░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW█(1) S█(2) SE░(2) =2 dead+2→░ r1c3░
+r1c4░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW█(1) S░(1) SE░(1) =1 dead+1→░ r1c4░
+r2c0░: NW░(0) N░(0) NE░(0) W░(0) E█(1) SW░(1) S░(1) SE░(1) =1 dead+1→░ r2c0░
+r2c1█: NW░(0) N░(0) NE░(0) W░(0) E█(1) SW░(1) S░(1) SE░(1) =1 live+1→░ r2c1░
+r2c2█: NW░(0) N░(0) NE░(0) W█(1) E█(2) SW░(2) S░(2) SE░(2) =2 live+2→█ r2c2█
+r2c3█: NW░(0) N░(0) NE░(0) W█(1) E░(1) SW░(1) S░(1) SE░(1) =1 live+1→░ r2c3░
+r2c4░: NW░(0) N░(0) NE░(0) W█(1) E░(1) SW░(1) S░(1) SE░(1) =1 dead+1→░ r2c4░
+r3c0░: NW░(0) N░(0) NE█(1) W░(1) E░(1) SW░(1) S░(1) SE░(1) =1 dead+1→░ r3c0░
+r3c1░: NW░(0) N█(1) NE█(2) W░(2) E░(2) SW░(2) S░(2) SE░(2) =2 dead+2→░ r3c1░
+r3c2░: NW█(1) N█(2) NE█(3) W░(3) E░(3) SW░(3) S░(3) SE░(3) =3 dead+3→█ r3c2█
+r3c3░: NW█(1) N█(2) NE░(2) W░(2) E░(2) SW░(2) S░(2) SE░(2) =2 dead+2→░ r3c3░
+r3c4░: NW█(1) N░(1) NE░(1) W░(1) E░(1) SW░(1) S░(1) SE░(1) =1 dead+1→░ r3c4░
+r4c0░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r4c0░
+r4c1░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r4c1░
+r4c2░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r4c2░
+r4c3░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r4c3░
+r4c4░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r4c4░
+NEW GRID 1/2
+r0: ░ ░ ░ ░ ░
+r1: ░ ░ █ ░ ░
+r2: ░ ░ █ ░ ░
+r3: ░ ░ █ ░ ░
+r4: ░ ░ ░ ░ ░
+GRID 1/2
+r0: ░ ░ ░ ░ ░
+r1: ░ ░ █ ░ ░
+r2: ░ ░ █ ░ ░
+r3: ░ ░ █ ░ ░
+r4: ░ ░ ░ ░ ░
+INDEXED
+r0c0░ r0c1░ r0c2░ r0c3░ r0c4░
+r1c0░ r1c1░ r1c2█ r1c3░ r1c4░
+r2c0░ r2c1░ r2c2█ r2c3░ r2c4░
+r3c0░ r3c1░ r3c2█ r3c3░ r3c4░
+r4c0░ r4c1░ r4c2░ r4c3░ r4c4░
+STEP 1→2
+r0c0░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r0c0░
+r0c1░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE█(1) =1 dead+1→░ r0c1░
+r0c2░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S█(1) SE░(1) =1 dead+1→░ r0c2░
+r0c3░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW█(1) S░(1) SE░(1) =1 dead+1→░ r0c3░
+r0c4░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r0c4░
+r1c0░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r1c0░
+r1c1░: NW░(0) N░(0) NE░(0) W░(0) E█(1) SW░(1) S░(1) SE█(2) =2 dead+2→░ r1c1░
+r1c2█: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S█(1) SE░(1) =1 live+1→░ r1c2░
+r1c3░: NW░(0) N░(0) NE░(0) W█(1) E░(1) SW█(2) S░(2) SE░(2) =2 dead+2→░ r1c3░
+r1c4░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r1c4░
+r2c0░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r2c0░
+r2c1░: NW░(0) N░(0) NE█(1) W░(1) E█(2) SW░(2) S░(2) SE█(3) =3 dead+3→█ r2c1█
+r2c2█: NW░(0) N█(1) NE░(1) W░(1) E░(1) SW░(1) S█(2) SE░(2) =2 live+2→█ r2c2█
+r2c3░: NW█(1) N░(1) NE░(1) W█(2) E░(2) SW█(3) S░(3) SE░(3) =3 dead+3→█ r2c3█
+r2c4░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r2c4░
+r3c0░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r3c0░
+r3c1░: NW░(0) N░(0) NE█(1) W░(1) E█(2) SW░(2) S░(2) SE░(2) =2 dead+2→░ r3c1░
+r3c2█: NW░(0) N█(1) NE░(1) W░(1) E░(1) SW░(1) S░(1) SE░(1) =1 live+1→░ r3c2░
+r3c3░: NW█(1) N░(1) NE░(1) W█(2) E░(2) SW░(2) S░(2) SE░(2) =2 dead+2→░ r3c3░
+r3c4░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r3c4░
+r4c0░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r4c0░
+r4c1░: NW░(0) N░(0) NE█(1) W░(1) E░(1) SW░(1) S░(1) SE░(1) =1 dead+1→░ r4c1░
+r4c2░: NW░(0) N█(1) NE░(1) W░(1) E░(1) SW░(1) S░(1) SE░(1) =1 dead+1→░ r4c2░
+r4c3░: NW█(1) N░(1) NE░(1) W░(1) E░(1) SW░(1) S░(1) SE░(1) =1 dead+1→░ r4c3░
+r4c4░: NW░(0) N░(0) NE░(0) W░(0) E░(0) SW░(0) S░(0) SE░(0) =0 dead+0→░ r4c4░
+NEW GRID 2/2
+r0: ░ ░ ░ ░ ░
+r1: ░ ░ ░ ░ ░
+r2: ░ █ █ █ ░
+r3: ░ ░ ░ ░ ░
+r4: ░ ░ ░ ░ ░
+DONE
+PRINT 0/2 ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ █ █ █ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
+PRINT 1/2 ░ ░ ░ ░ ░ ░ ░ █ ░ ░ ░ ░ █ ░ ░ ░ ░ █ ░ ░ ░ ░ ░ ░ ░
+PRINT 2/2 ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ █ █ █ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
