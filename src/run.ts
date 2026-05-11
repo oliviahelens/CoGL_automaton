@@ -5,7 +5,7 @@ import { formatUserPrompt, parseGridsFromResponse } from "./tape.ts";
 
 export const MODEL = "claude-opus-4-7";
 export const MAX_TOKENS = 8192;
-export const TEMPERATURE = 0;
+// Note: temperature is deprecated on Opus 4.7 — model uses fixed sampling.
 
 export const SYSTEM_PROMPT =
   "You are simulating Conway's Game of Life (rule B3/S23, boundary=dead). " +
@@ -49,13 +49,20 @@ export async function runTrial(
   const userPrompt = formatUserPrompt(initial, nSteps);
   messages.push({ role: "user", content: userPrompt });
 
-  const response = await client().messages.create({
-    model: MODEL,
-    max_tokens: MAX_TOKENS,
-    temperature: TEMPERATURE,
-    system: SYSTEM_PROMPT,
-    messages,
-  });
+  let response;
+  try {
+    response = await client().messages.create({
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
+      system: SYSTEM_PROMPT,
+      messages,
+    });
+  } catch (e: unknown) {
+    if (e instanceof Anthropic.APIError) {
+      console.error(`API error (status=${e.status}):`, JSON.stringify(e.error, null, 2));
+    }
+    throw e;
+  }
 
   const text = response.content
     .filter((b): b is Anthropic.TextBlock => b.type === "text")

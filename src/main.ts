@@ -3,13 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { scoreTrial, summarizePattern, type PatternSummary } from "./eval.ts";
 import { TEST_PATTERNS, type NamedPattern } from "./patterns.ts";
-import {
-  MAX_TOKENS,
-  MODEL,
-  SYSTEM_PROMPT,
-  TEMPERATURE,
-  runTrial,
-} from "./run.ts";
+import { MAX_TOKENS, MODEL, SYSTEM_PROMPT, runTrial } from "./run.ts";
 
 type Args = {
   nTrials: number;
@@ -95,7 +89,6 @@ async function main(): Promise<void> {
   const config = {
     model: MODEL,
     maxTokens: MAX_TOKENS,
-    temperature: TEMPERATURE,
     systemPrompt: SYSTEM_PROMPT,
     nTrials: args.nTrials,
     concurrency: args.concurrency,
