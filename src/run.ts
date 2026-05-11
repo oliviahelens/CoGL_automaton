@@ -4,12 +4,13 @@ import { buildTrainingExamples } from "./training.ts";
 import { formatUserPrompt, parseGridsFromResponse } from "./tape.ts";
 
 export const MODEL = "claude-opus-4-7";
-export const MAX_TOKENS = 8192;
+export const MAX_TOKENS = 16384;
 // Note: temperature is deprecated on Opus 4.7 — model uses fixed sampling.
 
 export const SYSTEM_PROMPT =
   "You are simulating Conway's Game of Life (rule B3/S23, boundary=dead). " +
   "Follow the exact tape format shown in the examples: emit the LOOKUP header, then for each step emit GRID t/N, INDEXED, STEP t→t+1 with one line per cell enumerating all 8 neighbors with cumulative live tally, and NEW GRID t+1/N. " +
+  "For each neighbor, write its source coordinate and value (e.g. NW=r2c2█) copied from the INDEXED block. Out-of-bounds neighbors are written as `oob░`. " +
   "Compute every cell explicitly. Do not skip cells. Do not summarize.";
 
 export type TrialResult = {

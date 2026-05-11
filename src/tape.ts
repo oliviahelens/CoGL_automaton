@@ -65,12 +65,17 @@ export function formatStep(g: Grid, t: number): string {
       for (const off of NEIGHBOR_OFFSETS) {
         const rr = r + off.dr;
         const cc = c + off.dc;
+        const inBounds = rr >= 0 && rr < R && cc >= 0 && cc < C;
         let v: 0 | 1 = 0;
-        if (rr >= 0 && rr < R && cc >= 0 && cc < C) {
+        let src: string;
+        if (inBounds) {
           v = g[rr]![cc]!;
+          src = `r${rr}c${cc}${sym(v)}`;
+        } else {
+          src = `oob░`;
         }
         if (v === 1) tally++;
-        parts.push(`${off.name}${sym(v)}(${tally})`);
+        parts.push(`${off.name}=${src}(${tally})`);
       }
       const state = center === 1 ? "live" : "dead";
       const newV = next[r]![c]!;

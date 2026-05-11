@@ -67,6 +67,15 @@ async function runPattern(
     const result = await runTrial(pattern.name, pattern.grid, pattern.steps, idx);
     const rawPath = resolve(rawDir, `${pattern.name}-${idx}.txt`);
     await writeFile(rawPath, result.response, "utf8");
+    const metaPath = resolve(rawDir, `${pattern.name}-${idx}.meta.json`);
+    await writeFile(
+      metaPath,
+      JSON.stringify(
+        { stopReason: result.stopReason, usage: result.usage },
+        null,
+        2,
+      ),
+    );
     const score = scoreTrial(result.parsedGrids, result.groundTruth);
     return score;
   });
