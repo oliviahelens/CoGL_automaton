@@ -179,9 +179,10 @@ PRINT 1/2 ...
 PRINT 2/2 ...
 ```
 
-The LWSS displaced two cells SE in 2 steps, which is the correct
-period-2 behavior. Strict bit-for-bit match against the ground-truth
-simulator on every cell of every step.
+Strict bit-for-bit match against the ground-truth simulator on every
+cell of every step. (LWSS is period-4 and only returns to its original
+shape after 4 steps; the step-2 state shown above is the mirrored
+intermediate phase.)
 
 ## Caveats
 
