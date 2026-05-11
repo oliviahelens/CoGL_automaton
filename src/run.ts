@@ -20,7 +20,12 @@ export type TrialResult = {
   parsedGrids: Grid[];
   groundTruth: Grid[];
   stopReason: string | null;
-  usage: { input_tokens: number; output_tokens: number } | null;
+  usage: {
+    input_tokens: number;
+    output_tokens: number;
+    cache_creation_input_tokens: number;
+    cache_read_input_tokens: number;
+  } | null;
 };
 
 let cachedClient: Anthropic | null = null;
@@ -42,10 +47,28 @@ export async function runTrial(
   trialIdx: number,
 ): Promise<TrialResult> {
   const shots = fewShot();
-  const messages: Array<{ role: "user" | "assistant"; content: string }> = [];
-  for (const ex of shots) {
+  const messages: Anthropic.MessageParam[] = [];
+  for (let i = 0; i < shots.length; i++) {
+    const ex = shots[i]!;
     messages.push({ role: "user", content: ex.userPrompt });
-    messages.push({ role: "assistant", content: ex.assistantTape });
+    // Mark the final assistant turn of the few-shot prefix as a cache breakpoint.
+    // Everything before and including this token (system + 3 user/assistant pairs)
+    // is reused across trials; only the final user test prompt varies.
+    const isLastShot = i === shots.length - 1;
+    if (isLastShot) {
+      messages.push({
+        role: "assistant",
+        content: [
+          {
+            type: "text",
+            text: ex.assistantTape,
+            cache_control: { type: "ephemeral" },
+          },
+        ],
+      });
+    } else {
+      messages.push({ role: "assistant", content: ex.assistantTape });
+    }
   }
   const userPrompt = formatUserPrompt(initial, nSteps);
   messages.push({ role: "user", content: userPrompt });
@@ -84,6 +107,10 @@ export async function runTrial(
       ? {
           input_tokens: response.usage.input_tokens,
           output_tokens: response.usage.output_tokens,
+          cache_creation_input_tokens:
+            response.usage.cache_creation_input_tokens ?? 0,
+          cache_read_input_tokens:
+            response.usage.cache_read_input_tokens ?? 0,
         }
       : null,
   };
