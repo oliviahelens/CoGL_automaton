@@ -103,17 +103,19 @@ Opus 4.7 list pricing (as of running these): input $15/MTok, cache write $18.75/
 
 Approximate per-call cost with the 3-shot prefix cached (~28K tokens):
 
-| call | cache state | output tokens | ~cost |
+| call | cache state | output tokens | rough ceiling |
 |---|---|---|---|
-| 6×6 / 2-step | cold | 8.8K | $1.20 |
-| 6×6 / 2-step | warm | 8.8K | $0.70 |
-| 6×6 / 3-step | warm | 13K | $1.05 |
-| 7×7 / 2-step | warm | 12K | $0.95 |
-| 10×10 / 2-step | warm | 24K | $1.85 |
+| 6×6 / 2-step | cold | 8.8K | ~$1.20 |
+| 6×6 / 2-step | warm | 8.8K | ~$0.70 |
+| 6×6 / 3-step | warm | 13K | ~$1.05 |
+| 7×7 / 2-step | warm | 12K | ~$0.95 |
+| 10×10 / 2-step | warm | 24K | ~$1.85 |
 
-Output dominates at every size and grows with cell count × step count. Sweep totals:
-- small suite (8 patterns, N=1, one cold + 7 warm): ~$7.50
-- 10×10 suite (4 patterns, N=1, all warm if run within 5 min of small sweep): ~$7.40
+These are back-of-envelope upper bounds using list rates. **Observed actual spend across the full set of runs documented in JOURNAL.md was ~$9 total** — roughly 2-3× less than these estimates suggest. Cache hits compound more than the simple model predicts, and output billing may not match list exactly for streaming.
+
+Output dominates at every size and grows with cell count × step count. Sweep totals (rough upper bounds):
+- small suite (8 patterns, N=1, one cold + 7 warm): ≲ $8
+- 10×10 suite (4 patterns, N=1, all warm if run within 5 min of small sweep): ≲ $7.50
 
 Caching saves ~$2-3 per sweep on the input side; it doesn't dent the output bill. Cache TTL is ~5 min, refreshed on each hit — running suites back-to-back keeps it warm.
 

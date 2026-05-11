@@ -162,3 +162,65 @@ The source-coord copy mechanism scales.
 - (3) Format ablations: still TODO. The most informative next experiment.
 - (4) Failure modes: we still haven't *seen* v2 fail. Need bigger / longer
   / ablated to break it and study the failure shape.
+
+---
+
+## 2026-05-11 — Note: Lewis's prediction vs. our 10×10 result
+
+Shared the 10×10 result with ctjLewis (author of the methodology being
+replicated). His reaction, paraphrased:
+
+> "I think 10×10 is just not gonna happen. It's too deep even if we break it
+> into 3×3 grids."
+
+But we observed 4/4 strict pass on 10×10 / 2 steps (LWSS + three random
+soups, including 40% density). Worth taking the disagreement seriously
+rather than waving it away.
+
+**Possible reconciliations, in rough order of plausibility:**
+
+1. **Step count.** Lewis's "too deep" likely refers to depth-in-time, not
+   depth-in-space. We tested 10×10 at 2 steps only. A blinker has period 2,
+   so "2 steps" is one cycle — barely enough to stress error accumulation.
+   The methodology may well break at 10×10 over 5+ steps as errors compound.
+   This is the cheapest experiment to run next and should be the first.
+
+2. **Model strength.** Lewis's original work was on Claude 3.x and Claude 4.x;
+   we're on Opus 4.7. The methodology may have a model-strength floor that
+   newer models clear easily. Same tape on a smaller model (Sonnet 4.6 or
+   Haiku 4.5) would test this.
+
+3. **Format additions.** Our v2 adds source-coordinate binding (`NW=r2c2█`)
+   that Lewis's published 1D-CA tape doesn't. The induction-head copy
+   mechanism may be doing more work than the surrounding scaffolding. An
+   ablation that drops the source-coord binding at 10×10 would isolate
+   this.
+
+4. **Lewis is talking about a different decomposition.** "Even if we break
+   it into 3×3 grids" suggests he was considering a spatially-decomposed
+   approach we didn't try. Our approach is global — the tape enumerates
+   every cell of the full 10×10 grid in order. If Lewis was envisioning a
+   tape that processes 3×3 sub-blocks separately and stitches them, his
+   "too deep" comment may be about that specific scheme, not the global
+   one.
+
+5. **Soup configurations happened to be easy.** Three soups all passed, but
+   they were three specific seeds. A grid that creates many ambiguous
+   neighborhoods (lots of 2s and 3s near the survival/birth boundary)
+   would stress the rule lookup harder.
+
+**My take:** the most likely answer is (1). At 2 steps, the model is doing
+~24K tokens of work in one shot, but each cell is independent — there's
+no error accumulation across steps yet. The real test is whether v2
+sustains accuracy at, say, 10×10 / 5+ steps where any single cell error in
+step k corrupts ~9 cells in step k+1. That's the experiment that would
+either vindicate or refute Lewis's intuition.
+
+Cost ceiling for a 10×10 / 5-step trial in v2: roughly 60K output tokens,
+well over the 32K cap. Would need to drop the `PRINT` pass and the visual
+`GRID` block between steps (escape hatches 1 and 2) to fit. Or run 2-step
+trajectories sequentially and feed each result back as the next prompt.
+The latter is more honest — it's how Lewis's original 1D-CA work
+extrapolated past the single-call budget.
+
+Open this thread back up before running the next experiment.
