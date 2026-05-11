@@ -2,14 +2,17 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { scoreTrial, summarizePattern, type PatternSummary } from "./eval.ts";
-import { TEST_PATTERNS, type NamedPattern } from "./patterns.ts";
+import { TEST_PATTERNS, TEST_PATTERNS_10X10, type NamedPattern } from "./patterns.ts";
 import { MAX_TOKENS, MODEL, SYSTEM_PROMPT, runTrial } from "./run.ts";
+
+type Suite = "small" | "10x10";
 
 type Args = {
   nTrials: number;
   patterns: string[] | null;
   concurrency: number;
   outDir: string;
+  suite: Suite;
 };
 
 function parseArgs(argv: string[]): Args {
@@ -17,6 +20,7 @@ function parseArgs(argv: string[]): Args {
     nTrials: 10,
     patterns: null,
     concurrency: 4,
+    suite: "small",
     outDir: resolve(
       dirname(fileURLToPath(import.meta.url)),
       "..",
@@ -30,8 +34,20 @@ function parseArgs(argv: string[]): Args {
     else if (arg === "--patterns") a.patterns = argv[++i]!.split(",");
     else if (arg === "--concurrency") a.concurrency = Number(argv[++i]);
     else if (arg === "--out") a.outDir = resolve(argv[++i]!);
+    else if (arg === "--suite") {
+      const v = argv[++i];
+      if (v !== "small" && v !== "10x10") {
+        console.error(`Unknown suite: ${v}`);
+        process.exit(1);
+      }
+      a.suite = v;
+    }
   }
   return a;
+}
+
+function suiteFor(suite: Suite): NamedPattern[] {
+  return suite === "10x10" ? TEST_PATTERNS_10X10 : TEST_PATTERNS;
 }
 
 async function runWithLimit<T, R>(
@@ -84,11 +100,15 @@ async function runPattern(
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
+  const available = suiteFor(args.suite);
   const chosen = args.patterns
-    ? TEST_PATTERNS.filter((p) => args.patterns!.includes(p.name))
-    : TEST_PATTERNS;
+    ? available.filter((p) => args.patterns!.includes(p.name))
+    : available;
   if (chosen.length === 0) {
-    console.error("No matching patterns. Available:", TEST_PATTERNS.map((p) => p.name).join(", "));
+    console.error(
+      `No matching patterns in suite "${args.suite}". Available:`,
+      available.map((p) => p.name).join(", "),
+    );
     process.exit(1);
   }
 

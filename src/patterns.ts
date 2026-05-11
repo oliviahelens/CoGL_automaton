@@ -122,6 +122,48 @@ export function rPentomino7x7(): Grid {
   ]);
 }
 
+export function randomSoup(
+  R: number,
+  C: number,
+  density: number,
+  seed: number,
+): Grid {
+  let s = seed >>> 0;
+  const rand = () => {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const g = blank(R, C);
+  for (let r = 0; r < R; r++) {
+    for (let c = 0; c < C; c++) {
+      g[r]![c] = rand() < density ? 1 : 0;
+    }
+  }
+  return g;
+}
+
+export function lwss10x10(): Grid {
+  // LWSS placed centrally in a 10×10 — same shape as lwss7x7
+  const g = blank(10, 10);
+  for (const [r, c] of [
+    [2, 2],
+    [2, 5],
+    [3, 6],
+    [4, 2],
+    [4, 6],
+    [5, 3],
+    [5, 4],
+    [5, 5],
+    [5, 6],
+  ] as Array<[number, number]>) {
+    g[r]![c] = 1;
+  }
+  return g;
+}
+
 export type NamedPattern = {
   name: string;
   grid: Grid;
@@ -143,4 +185,11 @@ export const TEST_PATTERNS: NamedPattern[] = [
   { name: "random-soup-b", grid: randomSoup6x6(0xbadbeef), steps: 3 },
   { name: "random-soup-c", grid: randomSoup6x6(0xfacade), steps: 3 },
   { name: "r-pentomino", grid: rPentomino7x7(), steps: 2 },
+];
+
+export const TEST_PATTERNS_10X10: NamedPattern[] = [
+  { name: "lwss-10x10", grid: lwss10x10(), steps: 2 },
+  { name: "soup-10x10-30-a", grid: randomSoup(10, 10, 0.3, 0xc0ffee), steps: 2 },
+  { name: "soup-10x10-30-b", grid: randomSoup(10, 10, 0.3, 0xbadbeef), steps: 2 },
+  { name: "soup-10x10-40", grid: randomSoup(10, 10, 0.4, 0xfacade), steps: 2 },
 ];
