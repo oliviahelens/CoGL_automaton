@@ -127,12 +127,3 @@ Check balance / top up: https://console.anthropic.com/settings/billing
 
 - **Streaming required above ~21K output tokens.** The SDK's non-streaming path throws if `max_tokens` could exceed a 10-minute completion budget. We use `messages.stream()` for everything to avoid the cliff.
 - **`temperature` is deprecated** on Opus 4.7. API returns 400 if passed.
-
-## v3 escape hatches
-
-If accuracy fails on larger or longer test cases, in roughly increasing cost:
-1. Drop the final `PRINT` pass to free output tokens.
-2. Drop the visual `GRID` block between steps, keep only `INDEXED`.
-3. Split the 8-neighbor count into row-by-row sub-tallies (3+2+3) with intermediate sub-totals.
-4. Add a 4th few-shot tape (dual pattern in opposite corners) to force localization.
-5. Reorder few-shot: glider → blinker → block (most complex first).
